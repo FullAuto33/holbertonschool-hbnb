@@ -65,3 +65,38 @@ function checkAuthentication() {
     fetchPlaces(token);
   }
 }
+
+
+
+async function fetchPlaces(token) {
+  try {
+    const response = await fetch('https://your-api-url/places', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (!response.ok) {
+      throw new Error('Erreur lors du chargement des lieux');
+    }
+    const places = await response.json();
+    displayPlaces(places);
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+
+document.getElementById('price-filter').addEventListener('change', (event) => {
+  const maxPrice = event.target.value;
+  const placesList = document.getElementById('places-list');
+  const placeCards = placesList.getElementsByClassName('place-card');
+
+  Array.from(placeCards).forEach(card => {
+    const price = parseFloat(card.dataset.price);
+    if (maxPrice === 'All' || price <= maxPrice) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+});
