@@ -4,19 +4,18 @@
   <meta charset="UTF-8" />
   <title>Détails du lieu</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="icon.png" />
 </head>
 <body>
   <header>
     <img src="logo.png" alt="Logo" class="logo" />
-    <a href="login.html" class="login-button">Login</a>
+    <nav>
+      <a href="index.html">Accueil</a>
+      <a href="login.html" class="login-button">Connexion</a>
+    </nav>
   </header>
-  <nav>
-    <a href="index.html">Accueil</a>
-    <a href="login.html">Login</a>
-  </nav>
+
   <main>
-    <section class="place-details" style="margin:20px; padding:10px; border:1px solid #ddd; border-radius:10px;">
+    <section id="place-details">
       <h1>Nom du lieu</h1>
       <div class="place-info">
         <p>Hôte: Jean Dupont</p>
@@ -26,20 +25,34 @@
       </div>
     </section>
 
-    <section class="reviews-list">
-      <article class="review-card" style="margin:20px; padding:10px; border:1px solid #ddd; border-radius:10px;">
-        <p>Commentaire: Super séjour!</p>
-        <p>Utilisateur: Marie</p>
-        <p>Note: ★★★★☆</p>
-      </article>
-      <!-- Plus de reviews ici -->
+    <section id="add-review" style="display:none;">
+      <h3>Ajouter un avis</h3>
+      <form id="review-form">
+        <label for="comment">Commentaire :</label><br/>
+        <textarea id="comment" name="comment" required></textarea><br/>
+        <label for="rating">Note :</label>
+        <select id="rating" name="rating" required>
+          <option value="">Sélectionnez</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select><br/>
+        <button type="submit">Envoyer</button>
+      </form>
     </section>
-
-    <!-- Bouton ou formulaire pour ajouter une review (visible si connecté) -->
-    <button id="add-review-button">Ajouter un avis</button>
   </main>
+
   <footer>
-    <p>Tous droits réservés © 2025</p>
+    <p>© Tous droits réservés</p>
   </footer>
+
+  <script src="scripts.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      checkAuthenticationAndLoad();
+    });
+  </script>
 </body>
 </html>
