@@ -14,7 +14,4 @@ def create_app(config_class=DevelopmentConfig):
     bcrypt.init_app(app)
     jwt.init_app(app)
 
-    from .routes import main as main_blueprint
-    app.register_blueprint(main_blueprint)
-
     return app
