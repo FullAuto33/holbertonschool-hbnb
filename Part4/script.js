@@ -246,3 +246,36 @@ async function submitReview(token, placeId, reviewText, rating) {
     return false;
   }
 }
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const reviewForm = document.getElementById('review-form');
+  const token = checkAuthentication(); // redirige si non connecté
+  const placeId = getPlaceIdFromURL();
+
+  if (!placeId) {
+    alert('Place ID manquant dans l\'URL');
+    window.location.href = 'index.html';
+    return;
+  }
+
+  if (reviewForm) {
+    reviewForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const comment = reviewForm.comment.value.trim();
+      const rating = reviewForm.rating.value;
+
+      if (!comment || !rating) {
+        alert('Merci de remplir tous les champs.');
+        return;
+      }
+
+      const success = await submitReview(token, placeId, comment, rating);
+
+      if (success) {
+        reviewForm.reset();
+      }
+    });
+  }
+});
