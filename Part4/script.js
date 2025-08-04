@@ -106,3 +106,23 @@ function getPlaceIdFromURL() {
   const params = new URLSearchParams(window.location.search);
   return params.get('id'); // Assure-toi que l’URL est du type place.html?id=123
 }
+
+
+let jwtToken = null;
+let placeId = null;
+
+function checkAuthenticationAndLoad() {
+  placeId = getPlaceIdFromURL();
+  jwtToken = getCookie('token');
+  const addReviewSection = document.getElementById('add-review');
+
+  if (!jwtToken) {
+    // Non authentifié : cacher le formulaire d'ajout de review
+    addReviewSection.style.display = 'none';
+    fetchPlaceDetails(null, placeId); // On peut quand même afficher les détails, sans token
+  } else {
+    // Authentifié : afficher le formulaire
+    addReviewSection.style.display = 'block';
+    fetchPlaceDetails(jwtToken, placeId);
+  }
+}
