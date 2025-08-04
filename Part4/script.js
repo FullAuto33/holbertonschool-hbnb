@@ -200,3 +200,49 @@ function displayPlaceDetails(place) {
   placeDetailsSection.appendChild(amenities);
   placeDetailsSection.appendChild(reviewsSection);
 }
+
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return null;
+}
+
+function getPlaceIdFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('id'); // attend URL du type add_review.html?id=123
+}
+
+function checkAuthentication() {
+  const token = getCookie('token');
+  if (!token) {
+    // Redirige vers la page d'accueil si pas connecté
+    window.location.href = 'index.html';
+  }
+  return token;
+}
+
+async function submitReview(token, placeId, reviewText, rating) {
+  try {
+    const response = await fetch(`https://your-api-url/places/${placeId}/reviews`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ comment: reviewText, rating: Number(rating) })
+    });
+
+    if (response.ok) {
+      alert('Review submitted successfully!');
+      return true;
+    } else {
+      const errorData = await response.json();
+      alert('Failed to submit review: ' + (errorData.message || response.statusText));
+      return false;
+    }
+  } catch (error) {
+    alert('Error submitting review: ' + error.message);
+    return false;
+  }
+}
