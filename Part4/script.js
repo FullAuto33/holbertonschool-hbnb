@@ -126,3 +126,77 @@ function checkAuthenticationAndLoad() {
     fetchPlaceDetails(jwtToken, placeId);
   }
 }
+
+
+async function fetchPlaceDetails(token, placeId) {
+  if (!placeId) {
+    alert('ID du lieu manquant dans l’URL');
+    return;
+  }
+
+  try {
+    const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+
+    const response = await fetch(`https://your-api-url/places/${placeId}`, { headers });
+
+    if (!response.ok) {
+      throw new Error('Erreur lors du chargement des détails');
+    }
+
+    const place = await response.json();
+    displayPlaceDetails(place);
+
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+function displayPlaceDetails(place) {
+  const placeDetailsSection = document.getElementById('place-details');
+  placeDetailsSection.innerHTML = ''; // Vider le contenu
+
+  // Créer éléments d’affichage
+  const title = document.createElement('h2');
+  title.textContent = place.name;
+
+  const price = document.createElement('p');
+  price.textContent = `Prix par nuit : $${place.price}`;
+
+  const description = document.createElement('p');
+  description.textContent = place.description;
+
+  const amenities = document.createElement('ul');
+  amenities.textContent = 'Équipements :';
+  place.amenities.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item;
+    amenities.appendChild(li);
+  });
+
+  // Section reviews
+  const reviewsSection = document.createElement('div');
+  reviewsSection.id = 'reviews';
+  reviewsSection.innerHTML = '<h3>Avis</h3>';
+
+  if (place.reviews && place.reviews.length > 0) {
+    place.reviews.forEach(review => {
+      const reviewCard = document.createElement('div');
+      reviewCard.classList.add('review-card');
+      reviewCard.innerHTML = `
+        <p>"${review.comment}"</p>
+        <p>Par : <strong>${review.user}</strong></p>
+        <p>Note : ${review.rating} / 5</p>
+      `;
+      reviewsSection.appendChild(reviewCard);
+    });
+  } else {
+    reviewsSection.innerHTML += '<p>Aucun avis pour ce lieu.</p>';
+  }
+
+  // Ajouter tous les éléments au conteneur principal
+  placeDetailsSection.appendChild(title);
+  placeDetailsSection.appendChild(price);
+  placeDetailsSection.appendChild(description);
+  placeDetailsSection.appendChild(amenities);
+  placeDetailsSection.appendChild(reviewsSection);
+}
