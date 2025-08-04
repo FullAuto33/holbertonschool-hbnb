@@ -100,3 +100,9 @@ document.getElementById('price-filter').addEventListener('change', (event) => {
     }
   });
 });
+
+
+function getPlaceIdFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('id'); // Assure-toi que l’URL est du type place.html?id=123
+}
