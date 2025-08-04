@@ -2,32 +2,46 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Liste des Places</title>
+  <title>Liste des lieux</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="icon.png" />
 </head>
 <body>
   <header>
-    <img src="logo.png" alt="Logo" class="logo" />
-    <a href="login.html" class="login-button">Login</a>
+    <img src="logo.png" class="logo" alt="Logo" />
+    <nav>
+      <a href="index.html">Accueil</a>
+      <a href="login.html" id="login-link" style="display:none;">Connexion</a>
+    </nav>
   </header>
-  <nav>
-    <a href="index.html">Accueil</a>
-    <a href="login.html">Login</a>
-  </nav>
+
   <main>
-    <section class="places-list">
-      <!-- Exemple d'une carte -->
+    <label for="price-filter">Filtrer par prix maximum :</label>
+    <select id="price-filter">
+      <option value="10">10</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+      <option value="All" selected>Tous</option>
+    </select>
+
+    <section id="places-list">
       <article class="place-card" style="margin:20px; padding:10px; border:1px solid #ddd; border-radius:10px;">
         <h2>Nom du lieu</h2>
         <p>Prix par nuit: 100€</p>
         <button class="details-button">View Details</button>
       </article>
-      <!-- Les cartes seront générées ici -->
     </section>
   </main>
+
   <footer>
-    <p>Tous droits réservés © 2025</p>
+    <p>© Tous droits réservés</p>
   </footer>
+
+  <script src="scripts.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      checkAuthentication();
+    });
+  </script>
 </body>
 </html>
+
